@@ -17,7 +17,7 @@ public class Model {
         return miModel;
     }
 
-    public void iniciarUsuario(FirebaseUser user){
+    public void iniciarUsuario(FirebaseUser user, Runnable callback){
         baseDatos.collection("usuarios").document(user.getUid()).get()
                 .addOnSuccessListener(document -> {
                     if (document.exists()) {
@@ -29,8 +29,7 @@ public class Model {
                                 document.getLong("distanciaMax"),
                                 document.getTimestamp("fechaInicio")
                         );
-                    }
-                    else {
+                    } else {
                         usuario = new Usuario(
                                 document.getId(),
                                 "realName",
@@ -40,7 +39,12 @@ public class Model {
                                 Timestamp.now()
                         );
                     }
-        });
+                    Log.i("LOGIN", "iniciarUsuario funcional");
+                    callback.run();
+                })
+                .addOnFailureListener(e -> {
+                    Log.i("LOGIN", "iniciarUsuario error");
+                });
     }
 
     public void setNombre(String nombre){
@@ -54,5 +58,9 @@ public class Model {
                     Log.e("FIRESTORE", "Error al actualizar nombre", e);
                 });
         usuario.setNombre(nombre);
+    }
+
+    public Usuario getUsuario(){
+        return this.usuario;
     }
 }

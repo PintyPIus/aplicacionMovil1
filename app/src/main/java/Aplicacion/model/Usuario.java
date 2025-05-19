@@ -25,5 +25,7 @@ public class Usuario {
     public void setNombre(String nombre){
         this.nombre = nombre;
     }
+    public String getNombreUsuario(){ return nombreUsuario;}
+    public void setNombreUsuario(String nombreUsuario){this.nombreUsuario=nombreUsuario;}
 
 }

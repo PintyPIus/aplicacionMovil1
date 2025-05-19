@@ -23,7 +23,6 @@ public class PantallaInicioController extends Activity {
     private static final int RC_SIGN_IN = 9001;
     private GoogleSignInClient mGoogleSignInClient;
     private FirebaseAuth mAuth;
-
     private Model model;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,11 +46,14 @@ public class PantallaInicioController extends Activity {
         Button btnGoogle = findViewById(R.id.btnGoogleLogin);
         btnGoogle.setOnClickListener(v -> signIn());
 
+        Log.i("LOGIN", "Se ha iniciado correctamente");
+
     }
 
     private void signIn() {
         Intent signInIntent = mGoogleSignInClient.getSignInIntent();
         startActivityForResult(signInIntent, RC_SIGN_IN);
+        Log.i("LOGIN", "SignIn funcional");
     }
 
     @Override
@@ -63,8 +65,9 @@ public class PantallaInicioController extends Activity {
             try {
                 GoogleSignInAccount account = task.getResult(ApiException.class);
                 firebaseAuthWithGoogle(account.getIdToken());
+                Log.i("LOGIN", "Exito en onActivityResult");
             } catch (ApiException e) {
-                Log.w("LOGIN", "Fallo en Google Sign-In", e);
+                Log.w("LOGIN", "Fallo en onActivityResult");
             }
         }
     }
@@ -75,9 +78,8 @@ public class PantallaInicioController extends Activity {
                 .addOnCompleteListener(this, task -> {
                     if (task.isSuccessful()) {
                         FirebaseUser user = mAuth.getCurrentUser();
-                        Log.d("LOGIN", "Sign-in correcto: " + user.getDisplayName());
-                        model.iniciarUsuario(user);
-                        mostrarPantallaUsuario();
+                        Log.i("LOGIN", "Sign-in correcto: " + user.getDisplayName());
+                        model.iniciarUsuario(user, () -> mostrarPantallaUsuario());
                     } else {
                         Log.w("LOGIN", "Fallo en Firebase Sign-in", task.getException());
                     }
@@ -88,5 +90,6 @@ public class PantallaInicioController extends Activity {
         Intent intent = new Intent(this, PantallaUsuarioController.class);
         startActivity(intent);
         finish();
+        Log.i("LOGIN", "mostrarPantallaUsuario funcional");
     }
 }
