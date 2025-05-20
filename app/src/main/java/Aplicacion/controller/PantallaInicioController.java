@@ -67,7 +67,7 @@ public class PantallaInicioController extends Activity {
                 firebaseAuthWithGoogle(account.getIdToken());
                 Log.i("LOGIN", "Exito en onActivityResult");
             } catch (ApiException e) {
-                Log.w("LOGIN", "Fallo en onActivityResult");
+                Log.w("LOGIN", "Fallo en onActivityResult: " + e.getStatusCode(), e);
             }
         }
     }

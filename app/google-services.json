@@ -12,7 +12,20 @@
           "package_name": "com.MiApp.app"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "682197840405-42liea27u3oeuudvtep7kqgu6q8cqo84.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.MiApp.app",
+            "certificate_hash": "3826cd85c83c985372378c2cacf521f896544d9c"
+          }
+        },
+        {
+          "client_id": "682197840405-arv8ljn8a1koqa21v47vsc3rle5sjulv.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyCw7mVShHl0rNeuD_e1CViBv5Sdbred384"
@@ -20,7 +33,12 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "682197840405-arv8ljn8a1koqa21v47vsc3rle5sjulv.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         }
       }
     }

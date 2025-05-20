@@ -43,7 +43,7 @@ public class Model {
                     callback.run();
                 })
                 .addOnFailureListener(e -> {
-                    Log.i("LOGIN", "iniciarUsuario error");
+                    Log.e("LOGIN", "iniciarUsuario error", e);
                 });
     }
 
