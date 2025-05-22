@@ -10,6 +10,7 @@ public class Model {
     private static final Model miModel = new Model();
     FirebaseFirestore baseDatos = FirebaseFirestore.getInstance();
     private Usuario usuario;
+    private FirebaseUser user;
     private Model(){
 
     }
@@ -18,6 +19,7 @@ public class Model {
     }
 
     public void iniciarUsuario(FirebaseUser user, Runnable callback){
+        this.user = user;
         baseDatos.collection("usuarios").document(user.getUid()).get()
                 .addOnSuccessListener(document -> {
                     if (document.exists()) {
@@ -29,12 +31,14 @@ public class Model {
                                 document.getLong("distanciaMax"),
                                 document.getTimestamp("fechaInicio")
                         );
-                    } else {
+                    }
+                    else {
+                        // Crear un nuevo usuario con valores por defecto
                         usuario = new Usuario(
-                                document.getId(),
-                                "realName",
-                                "realSubname",
-                                "userName",
+                                user.getUid(),
+                                "NombrePorDefecto",
+                                "ApellidoPorDefecto",
+                                "nombreUsuarioPorDefecto",
                                 10,
                                 Timestamp.now()
                         );
@@ -47,20 +51,73 @@ public class Model {
                 });
     }
 
-    public void setNombre(String nombre){
-        baseDatos.collection("usuarios").document(usuario.getuID())
-                .update("nombre", nombre)
-                .addOnSuccessListener(unused -> {
-                    usuario.setNombre(nombre);  // Actualizas el objeto en memoria
-                    Log.d("FIRESTORE", "Nombre actualizado correctamente.");
+    public void usuarioExistente(FirebaseUser user, ResultadoUsuarioCallback callback) {
+        baseDatos.collection("usuarios").document(user.getUid()).get()
+                .addOnSuccessListener(document -> {
+                    callback.onResultado(document.exists());
                 })
                 .addOnFailureListener(e -> {
-                    Log.e("FIRESTORE", "Error al actualizar nombre", e);
+                    Log.e("COMPROBACION", "usuarioExistente error", e);
+                    callback.onResultado(false);
                 });
-        usuario.setNombre(nombre);
+    }
+    public void comprobarNombreUsuario(String nombre, ResultadoNombreCallback callback) {
+        baseDatos.collection("usuarios")
+                .whereEqualTo("nombreUsuario", nombre)
+                .get()
+                .addOnSuccessListener(querySnapshot -> {
+                    if (!querySnapshot.isEmpty()) {
+                        callback.onResult(false);
+                    } else {
+                        callback.onResult(true);
+                    }
+                })
+                .addOnFailureListener(e -> {
+                    Log.e("COMPROBACION", "Error al comprobar nombre de usuario", e);
+                    callback.onResult(false);
+                });
     }
 
-    public Usuario getUsuario(){
-        return this.usuario;
+
+
+
+    public void setNombre(String nombre){
+        baseDatos.collection("usuarios").document(usuario.getuID())
+                .update("nombre", nombre);
+        usuario.setNombre(nombre);
+    }
+    public String getNombre(){
+        return usuario.getNombre();
+    }
+
+    public void setApellido(String apellido){
+        baseDatos.collection("usuarios").document(usuario.getuID())
+                .update("apellido", apellido);
+        usuario.setApellido(apellido);
+    }
+    public String getApellido(){
+        return usuario.getApellido();
+    }
+
+    public void setNombreUsuario(String nombreUsuario){
+        baseDatos.collection("usuarios").document(usuario.getuID())
+                .update("nombreUsuario", nombreUsuario);
+        usuario.setNombreUsuario(nombreUsuario);
+    }
+    public String getNombreUsuario(){
+        return usuario.getNombreUsuario();
+    }
+
+    public void setDistanciaMax(long distanciaMax){
+        baseDatos.collection("usuarios").document(usuario.getuID())
+                .update("distanciaMax", distanciaMax);
+        usuario.setDistanciaMax(distanciaMax);
+    }
+    public long getDistanciaMax(){
+        return usuario.getDistanciaMax();
+    }
+
+    public FirebaseUser getUser(){
+        return user;
     }
 }

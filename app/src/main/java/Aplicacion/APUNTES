@@ -1,0 +1,5 @@
+Adaptar el controller al view
+model/iniciarUsuario (usuarioNuevo) --> nueva pantalla de configuracion
+
+IMPLEMENTAR IA A LA APP
+https://firebase.google.com/docs/ai-logic/get-started?authuser=0&hl=es&api=dev#add-sdk

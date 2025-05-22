@@ -8,8 +8,8 @@
 
     <TextView
         android:id="@+id/texto"
-        android:layout_width="250dp"
-        android:layout_height="70dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:text="REGISTRATION SCREEN"
         android:textSize="20sp"
         android:textColor="@color/white"

@@ -2,29 +2,35 @@ package Aplicacion.controller;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.TextView;
 
 import com.MiApp.app.R;
 
 import Aplicacion.model.Model;
+import Aplicacion.view.ViewFactory;
 
 public class PantallaUsuarioController extends Activity {
     private Model model = Model.getInstance();
+    private ViewFactory viewFactory;
 
     protected void onCreate(Bundle savedInstanceState) {
         //Esto inicializa la vista
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.pantalla_usuario);
+        try {
+            viewFactory = new ViewFactory(this);
+            viewFactory.mostrarPantallaUsuario();
 
-        cargarDatos();
-    }
+            // resto...
+        } catch (Exception e) {
+            Log.e("ERROR", "Fallo al cargar pantalla usuario", e);
+        }
 
-    private void cargarDatos(){
-        cargarUsuario();
-    }
+        TextView txtNombreUsuario = findViewById(R.id.textoNombreUsuario);
+        txtNombreUsuario.setText(model.getNombreUsuario());
 
-    private void cargarUsuario(){
-        TextView txtNombre = findViewById(R.id.textoNombreUsuario);
-        txtNombre.setText(model.getUsuario().getNombreUsuario());
+        TextView txtNombreYApellido = findViewById(R.id.textoNombreYApellido);
+        String nombreYApellido = "Bienvenido, " + model.getNombre() + " " + model.getApellido();
+        txtNombreYApellido.setText(nombreYApellido);
     }
 }

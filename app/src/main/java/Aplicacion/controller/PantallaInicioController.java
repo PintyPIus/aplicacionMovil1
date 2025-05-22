@@ -18,17 +18,21 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 
 import Aplicacion.model.Model;
+import Aplicacion.view.ViewFactory;
 
 public class PantallaInicioController extends Activity {
     private static final int RC_SIGN_IN = 9001;
     private GoogleSignInClient mGoogleSignInClient;
     private FirebaseAuth mAuth;
     private Model model;
+
+    private ViewFactory viewFactory;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         //Esto inicializa la vista
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.pantalla_inicio);
+        viewFactory = new ViewFactory(this);
+        viewFactory.mostrarPantallaInicio();
 
         //Obtienes la instancia del firebase y el model
         mAuth = FirebaseAuth.getInstance();
@@ -87,9 +91,15 @@ public class PantallaInicioController extends Activity {
     }
 
     private void mostrarPantallaUsuario(){
-        Intent intent = new Intent(this, PantallaUsuarioController.class);
-        startActivity(intent);
-        finish();
-        Log.i("LOGIN", "mostrarPantallaUsuario funcional");
+        model.usuarioExistente(model.getUser(), existe -> {
+            if (existe) {
+                Intent intent = new Intent(this, PantallaUsuarioController.class);
+                startActivity(intent);
+            } else {
+                Intent intent = new Intent(this, PantallaPersonalizacionController.class);
+                startActivity(intent);
+            }
+            finish();
+        });
     }
 }

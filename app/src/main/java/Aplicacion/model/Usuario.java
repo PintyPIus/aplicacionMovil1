@@ -25,7 +25,17 @@ public class Usuario {
     public void setNombre(String nombre){
         this.nombre = nombre;
     }
-    public String getNombreUsuario(){ return nombreUsuario;}
+    public String getNombre(){return nombre;}
+
+    public void setApellido(String apellido){
+        this.apellido = apellido;
+    }
+    public String getApellido(){return apellido;}
+
     public void setNombreUsuario(String nombreUsuario){this.nombreUsuario=nombreUsuario;}
+    public String getNombreUsuario(){ return nombreUsuario;}
+
+    public void setDistanciaMax(long distanciaMax){this.distanciaMax= distanciaMax;}
+    public long getDistanciaMax(){ return distanciaMax;}
 
 }
